@@ -10,11 +10,15 @@
 * 8 prodactions (devops + разработчики);
 
 
-* 3.1
-*   Задание : Ознакомьтесь с возможностями конфигурации VirtualBox через Vagrantfile: документация. Как добавить оперативной памяти или ресурсов процессора виртуальной машине?
+### 3.1
+* 
 *     config.vm.provider "virtualbox" do |v|
 *       v.memory = 1024
 *       v.cpus = 1
 *     end
-*   Задание : 
+* 
+*   2399        history-size (unset) 
+*   837               of ignoreboth is shorthand for ignorespace and ignoredups.   совмещает в себе два параметра . ингорировать пробелы и дубли команд
+*    257        { list; }   если верить описанию {} пишутся команды которые должны выполнятся в текущей среде (current shell). 
+* 
 
