@@ -41,54 +41,57 @@ for result in result_os.split('\n'):
 
 import os
 import sys
-patch = sys.argv[1]
-com = "cd "
-com += patch
-bash_command = [com , "git status"]
+c_patch = "cd "
+c_patch += sys.argv[1]
+bash_command = [c_patch, "git status"]
 result_os = os.popen(' && '.join(bash_command)).read()
 is_change = False
 for result in result_os.split('\n'):
-    if result.find('modified') != -1:
-        prepare_result = result.replace('\tmodified:   ', '')
-        print(os.path.realpath(prepare_result))
+  if result.find('изменено') != -1:
+    prepare_result = result.replace('\tизменено:   ', '')
+    print(os.path.realpath(prepare_result))
+
 
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-root@test:/home/art/devops-netology/devops-netology# ./test1/1.py /home/art/devops-netology/devops-netology
-cd /home/art/devops-netology/devops-netology
+root@test:/home/art/devops-netology/devops-netology# ./test1/1.py ./
 /home/art/devops-netology/devops-netology/   test1/1.md
 /home/art/devops-netology/devops-netology/   test1/1.py
+
 
 ```
 
 ## Обязательная задача 3
 1. Доработать скрипт выше так, чтобы он мог проверять не только локальный репозиторий в текущей директории, а также умел воспринимать путь к репозиторию, который мы передаём как входной параметр. Мы точно знаем, что начальство коварное и будет проверять работу этого скрипта в директориях, которые не являются локальными репозиториями.
 
-### Ваш скрипт: скрипт тут остался тот же . я зачем то сразу стал принимать параметр , проверка является ли папка репозиторием ксрипт проходит без изменений корректно , покрайней мере завершается нормально с нормальныи ответом
+### Ваш скрипт: 
+*   скрипт тут остался тот же, я зачем то сразу наисал ввод пути по параметру, проверка является ли папка репозиторием скрипт проходит без изменений корректно , покрайней мере завершается нормально с нормальныи ответом
 ```python
 #!/usr/bin/env python3
 
 import os
 import sys
-patch = sys.argv[1]
-com = "cd "
-com += patch
-bash_command = [com , "git status"]
+c_patch = "cd "
+c_patch += sys.argv[1]
+bash_command = [c_patch, "git status"]
 result_os = os.popen(' && '.join(bash_command)).read()
 is_change = False
 for result in result_os.split('\n'):
-    if result.find('modified') != -1:
-        prepare_result = result.replace('\tmodified:   ', '')
-        print(os.path.realpath(prepare_result))
+  if result.find('изменено') != -1:
+    prepare_result = result.replace('\tизменено:   ', '')
+    print(os.path.realpath(prepare_result))
+
+
 ```
 
-### Вывод скрипта при запуске при тестировании:
+### Вывод скрипта при запуске при тестировании:  
+*   тут я задаю заведомо каталог не являющийся репозиторием
 ```
 root@test:/home/art/devops-netology/devops-netology# ./test1/1.py /home/art/devops-netology
-cd /home/art/devops-netology
 fatal: не найден git репозиторий (или один из родительских каталогов): .git
+
 
 ```
 
