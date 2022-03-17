@@ -116,7 +116,7 @@ for names in name_list:
     ips =  socket.gethostbyname(names)
     name_list[names] = ips
     if name_list.get(names) != name_listold.get(names):
-        print("[error]: ", names, "new ip: ", name_list.get(names), " old ip: ", name_listold.get(names))
+        print("[error]: ", names, " IP mismatch: ", name_listold.get(names), " New ip: ", name_list.get(names),)
     else:
         print(names, "new ip: ", name_list.get(names))
 with open('/mnt/c/Users/Art/PycharmProjects/devops-netology/test/name.json', 'w') as j:
@@ -127,13 +127,14 @@ with open('/mnt/c/Users/Art/PycharmProjects/devops-netology/test/name.json', 'w'
 *   соответственно вывод скрипта
 ```
 art@PONYO:/mnt/c/Users/Art/PycharmProjects/devops-netology/test$ python3 2.py
-[error]:  drive.google.com new ip:  64.233.164.194  old ip:  142.251.1.194
-[error]:  mail.google.com new ip:  108.177.14.17  old ip:  173.194.222.17
-[error]:  google.com new ip:  74.125.131.113  old ip:  108.177.14.139
+[error]:  drive.google.com  IP mismatch:  64.233.164.194  New ip:  64.233.161.194
+[error]:  mail.google.com  IP mismatch:  108.177.14.17  New ip:  64.233.162.17
+[error]:  google.com  IP mismatch:  74.125.131.113  New ip:  173.194.221.113
 art@PONYO:/mnt/c/Users/Art/PycharmProjects/devops-netology/test$ python3 2.py
-drive.google.com new ip:  64.233.164.194
-mail.google.com new ip:  108.177.14.17
-google.com new ip:  74.125.131.113
+drive.google.com new ip:  64.233.161.194
+mail.google.com new ip:  64.233.162.17
+google.com new ip:  173.194.221.113
+
 
 ```
 
