@@ -17,25 +17,25 @@ Date:   Thu Jun 18 10:29:58 2020 -0400
 ```
 2. Какому тегу соответствует коммит `85024d3`?
 ```bash
-# git show 85024d3
+git show 85024d3
 commit 85024d3100126de36331c6982bfaac02cdab9e76 (tag: v0.12.23)
 Соответсвтвено тег  v0.12.23
 ```
 3. Сколько родителей у коммита `b8d720`? Напишите их хеши.
 ```bash
-root@test:/home/art/devops-netology/teraform/terraform# git log  --pretty=format:"%h - %P" | grep b8d720
+git log  --pretty=format:"%h - %P" | grep b8d720
 38afbb34c - b8d720f8340221f2146e4e4870bf2ee0bc48f2d5
 b8d720f83 - 56cd7859e05c36c06b56d013b55a252d0bb7e158 9ea88f22fc6269854151c571162c5bcf958bee2b
-узнаем колличество родителей , видим что их 2
-получаем хеши родителей
-root@test:/home/art/devops-netology/teraform/terraform# git show  b8d720^1
+# Узнаем колличество родителей , видим что их 2
+# получаем хеши родителей
+git show  b8d720^1
 commit 56cd7859e05c36c06b56d013b55a252d0bb7e158
-root@test:/home/art/devops-netology/teraform/terraform# git show  b8d720^2
+git show  b8d720^2
 commit 9ea88f22fc6269854151c571162c5bcf958bee2b
 ```
 4. Перечислите хеши и комментарии всех коммитов которые были сделаны между тегами  v0.12.23 и v0.12.24.
 ```bash
-# git log  v0.12.23..v0.12.24 --oneline   
+git log  v0.12.23..v0.12.24 --oneline   
 33ff1c03b (tag: v0.12.24) v0.12.24
 b14b74c49 [Website] vmc provider links
 3f235065b Update CHANGELOG.md
@@ -50,22 +50,22 @@ dd01a3507 Update CHANGELOG.md
 5. Найдите коммит в котором была создана функция `func providerSource`, ее определение в коде выглядит 
 так `func providerSource(...)` (вместо троеточего перечислены аргументы).
 ```bash
-Находим комит где упоминается эта функция и поскольку комит 1 , то это указывает на появление той функции
-# git log -S"func providerSource(" --oneline
+# Находим комит где упоминается эта функция и поскольку комит 1 , то это указывает на появление той функции
+git log -S"func providerSource(" --oneline
 8c928e835 main: Consult local directories as potential mirrors of providers
-Далее роверяем что мы не ошиблись 
-# git show 8c928e835 | grep "func providerSource"
+# Далее роверяем что мы не ошиблись 
+git show 8c928e835 | grep "func providerSource"
 +func providerSource(services *disco.Disco) getproviders.Source {
 ```
 6. Найдите все коммиты в которых была изменена функция `globalPluginDirs`.
 ```bash
-Находим всме коммиты  где упоминается эта функция
-# git log -S"globalPluginDirs" --oneline
+# Находим всме коммиты  где упоминается эта функция
+git log -S"globalPluginDirs" --oneline
 35a058fb3 main: configure credentials from the CLI config file
 c0b176109 prevent log output during init
 8364383c3 Push plugin discovery down into command package
-Впринциеп это все . но на всякий проеряем что там небыло удаления этой функции , смотрим тапорно глазками.. 
-# git show c0b176109 |grep globalPluginDirs
+# Впринциеп это все . но на всякий проеряем что там небыло удаления этой функции , смотрим тапорно глазками.. 
+git show c0b176109 |grep globalPluginDirs
 +               // FIXME: homeDir gets called from globalPluginDirs during init, before
 root@test:/home/art/devops-netology/teraform/terraform# git show 35a058fb3 |grep globalPluginDirs
 +               available := pluginDiscovery.FindPlugins("credentials", globalPluginDirs())
@@ -76,8 +76,8 @@ root@test:/home/art/devops-netology/teraform/terraform# git show 8364383c3 |grep
 ```
 8. Кто автор функции `synchronizedWriters`? 
 ```bash
-Запускаем мой уже любимый git log и видим, что автор первого коммит где появляется упоминание этой функции Martin Atkins
-# git log -S"synchronizedWrite" --pretty=format:"%H - %an"
+# Запускаем мой уже любимый git log и видим, что автор первого коммит где появляется упоминание этой функции Martin Atkins
+git log -S"synchronizedWrite" --pretty=format:"%H - %an"
 bdfea50cc85161dea41be0fe3381fd98731ff786 - James Bardin
 fd4f7eb0b935e5a838810564fd549afe710ae19a - James Bardin
 5ac311e2a91e381e2f52234668b49ba670aa0fe5 - Martin Atkins
