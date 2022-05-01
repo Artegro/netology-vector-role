@@ -42,15 +42,14 @@
 ## Задача 3
 
 Установить на личный компьютер:
-*Приложить вывод команд установленных версий каждой из программ, оформленный в markdown.*
-- VirtualBox
+### VirtualBox
 ```bash
 #  virtualbox -h
 Oracle VM VirtualBox VM Selector v6.1.32_Debian
 (C) 2005-2022 Oracle Corporation
 All rights reserved.
 ```
-- Vagrant
+### Vagrant
 ``` bash
 # vagrant -v
 Vagrant 2.2.14
@@ -63,8 +62,47 @@ Vagrant 2.2.14
 Download redirected to host: vagrantcloud-files-production.s3-accelerate.amazonaws.com
 ==> box: Successfully added box 'bento/ubuntu-20.04' (v202112.19.0) for 'virtualbox'!
 
+# vagrant box list
+bento/ubuntu-20.04 (virtualbox, 202112.19.0)
 ```
-- Ansible
+- Старт вм , с конфигом из лекции , проверка Vagrant
+``` bash
+# vagrant status
+Current machine states:
+
+server1.netology          running (virtualbox)
+# vagrant ssh
+Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-91-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+ System information disabled due to load higher than 1.0
+
+
+This system is built by the Bento project by Chef Software
+More information can be found at https://github.com/chef/bento
+
+vagrant@server1:~$ cat /etc/*release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=20.04
+DISTRIB_CODENAME=focal
+DISTRIB_DESCRIPTION="Ubuntu 20.04.3 LTS"
+NAME="Ubuntu"
+VERSION="20.04.3 LTS (Focal Fossa)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 20.04.3 LTS"
+VERSION_ID="20.04"
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=focal
+UBUNTU_CODENAME=focal
+```
+### Ansible
 ``` bash
 # ansible --version
 ansible 2.10.8
