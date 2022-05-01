@@ -42,12 +42,39 @@
 ## Задача 3
 
 Установить на личный компьютер:
-
-- VirtualBox
-- Vagrant
-- Ansible
-
 *Приложить вывод команд установленных версий каждой из программ, оформленный в markdown.*
+- VirtualBox
+```bash
+#  virtualbox -h
+Oracle VM VirtualBox VM Selector v6.1.32_Debian
+(C) 2005-2022 Oracle Corporation
+All rights reserved.
+```
+- Vagrant
+``` bash
+# vagrant -v
+Vagrant 2.2.14
+
+# vagrant box add bento/ubuntu-20.04 --provider=virtualbox --force
+==> box: Loading metadata for box 'bento/ubuntu-20.04'
+    box: URL: https://vagrantcloud.com/bento/ubuntu-20.04
+==> box: Adding box 'bento/ubuntu-20.04' (v202112.19.0) for provider: virtualbox
+    box: Downloading: https://vagrantcloud.com/bento/boxes/ubuntu-20.04/versions/202112.19.0/providers/virtualbox.box
+Download redirected to host: vagrantcloud-files-production.s3-accelerate.amazonaws.com
+==> box: Successfully added box 'bento/ubuntu-20.04' (v202112.19.0) for 'virtualbox'!
+
+```
+- Ansible
+``` bash
+# ansible --version
+ansible 2.10.8
+  config file = None
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 3.9.2 (default, Feb 28 2021, 17:03:44) [GCC 10.2.1 20210110]
+```
+
 
 ## Задача 4 (*)
 
