@@ -125,7 +125,7 @@ Docker контейнеры , скорее всего в виртуальной 
 - Добавьте еще один файл в папку ```/data``` на хостовой машине;
 - Подключитесь во второй контейнер и отобразите листинг и содержание файлов в ```/data``` контейнера.
 ### Ответ
--  Скаиваем образы
+-  Скачеваем образы
 ```bash
 $ docker pull debian
 $ docker pull centos
@@ -145,7 +145,8 @@ CONTAINER ID   IMAGE           COMMAND       CREATED          STATUS          PO
 62b371ef24ff   debian:latest   "bash"        2 seconds ago    Up 1 second               deb
 3ac81621c7a6   centos:latest   "/bin/bash"   26 seconds ago   Up 25 seconds             cent
 ```
-- Далее по порядку , создаем файл в контейнере с центос  
+- Далее по порядкуЖ
+- Создаем файл с текстом в контейнере с центос  
 - Создаем файл на хосте и проверяем на нем листинг
 - Проверяем листинг и содержимое файла на контейнере дебиан 
 ```bash
@@ -155,12 +156,14 @@ $ docker exec -it cent "/bin/bash"
 1.txt
 [root@3ac81621c7a6 /]# exit
 exit
+
 vagrant@server1:~/dock2/data$ ls
 1.txt
 vagrant@server1:~/dock2/data$ touch 2.txt
 vagrant@server1:~/dock2/data$ ls
 1.txt  2.txt
 vagrant@server1:~/dock2/data$ docker exec -it deb "bash"
+
 root@62b371ef24ff:/# ls /data
 1.txt  2.txt
 root@62b371ef24ff:/# cat /data/1.txt
