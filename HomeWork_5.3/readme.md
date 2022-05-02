@@ -124,12 +124,50 @@ Docker контейнеры , скорее всего в виртуальной 
 - Подключитесь к первому контейнеру с помощью ```docker exec``` и создайте текстовый файл любого содержания в ```/data```;
 - Добавьте еще один файл в папку ```/data``` на хостовой машине;
 - Подключитесь во второй контейнер и отобразите листинг и содержание файлов в ```/data``` контейнера.
-
-## Задача 4 (*)
-
-Воспроизвести практическую часть лекции самостоятельно.
-
-Соберите Docker образ с Ansible, загрузите на Docker Hub и пришлите ссылку вместе с остальными ответами к задачам.
+### Ответ
+-  Скаиваем образы
+```bash
+$ docker pull debian
+$ docker pull centos
+```
+- создаем папку 
+```bash
+$ mkdir data
+```
+-запускаем контейнеры
+```bash
+$ docker run --name=cent -d -v /home/vagrant/dock2/data:/data -t centos:latest
+3ac81621c7a668559f1bb267f9913701bb803205fad45a375f3dc8fa1c2f96f9
+$ docker run --name=deb -d -v /home/vagrant/dock2/data:/data -t debian:latest
+62b371ef24ff0106ffa13eb8fcfc4605350d8dcee44db09e5b5b254793ba82a6
+a$ docker ps
+CONTAINER ID   IMAGE           COMMAND       CREATED          STATUS          PORTS     NAMES
+62b371ef24ff   debian:latest   "bash"        2 seconds ago    Up 1 second               deb
+3ac81621c7a6   centos:latest   "/bin/bash"   26 seconds ago   Up 25 seconds             cent
+```
+- Далее по порядку , создаем файл в контейнере с центос  
+- Создаем файл на хосте и проверяем на нем листинг
+- Проверяем листинг и содержимое файла на контейнере дебиан 
+```bash
+$ docker exec -it cent "/bin/bash"
+[root@3ac81621c7a6 /]# echo "Test centos" > /data/1.txt
+[root@3ac81621c7a6 /]# ls /data
+1.txt
+[root@3ac81621c7a6 /]# exit
+exit
+vagrant@server1:~/dock2/data$ ls
+1.txt
+vagrant@server1:~/dock2/data$ touch 2.txt
+vagrant@server1:~/dock2/data$ ls
+1.txt  2.txt
+vagrant@server1:~/dock2/data$ docker exec -it deb "bash"
+root@62b371ef24ff:/# ls /data
+1.txt  2.txt
+root@62b371ef24ff:/# cat /data/1.txt
+Test centos
+root@62b371ef24ff:/# exit
+exit
+```
 
 
 
