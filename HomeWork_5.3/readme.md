@@ -145,7 +145,7 @@ CONTAINER ID   IMAGE           COMMAND       CREATED          STATUS          PO
 62b371ef24ff   debian:latest   "bash"        2 seconds ago    Up 1 second               deb
 3ac81621c7a6   centos:latest   "/bin/bash"   26 seconds ago   Up 25 seconds             cent
 ```
-- Далее по порядкуЖ
+- Далее по порядку:
 - Создаем файл с текстом в контейнере с центос  
 - Создаем файл на хосте и проверяем на нем листинг
 - Проверяем листинг и содержимое файла на контейнере дебиан 
