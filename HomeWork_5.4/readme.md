@@ -29,6 +29,16 @@
 - Скриншот страницы свойств созданной ВМ, как на примере ниже:
 ### Ответ
 Так же взята из репоитария домашнего задания , поменены параметры в часности имя образа, и все id.
+```bash
+$ terraform apply   
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+...
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+Outputs:
+external_ip_address_node01_yandex_cloud = "51.250.67.220"
+internal_ip_address_node01_yandex_cloud = "192.168.101.3"
+```
 <p align="center">
   <img src="./542.PNG">
 </p>
