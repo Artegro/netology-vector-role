@@ -40,7 +40,7 @@ external_ip_address_node01_yandex_cloud = "51.250.67.220"
 internal_ip_address_node01_yandex_cloud = "192.168.101.3"
 ```
 <p align="center">
-  <img src="./5421.PNG">
+  <img src="./5422.PNG">
 </p>
 
 ## Задача 3
@@ -102,7 +102,7 @@ node01.netology.cloud      : ok=12   changed=10   unreachable=0    failed=0    s
 ```
 
 <p align="center">
-  <img width="800" height="480" src="./">
+  <img width="800" height="480" src="./543.PNG">
 </p>
 
 ## Задача 4 (*)
