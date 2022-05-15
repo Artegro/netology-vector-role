@@ -40,7 +40,7 @@ external_ip_address_node01_yandex_cloud = "51.250.67.220"
 internal_ip_address_node01_yandex_cloud = "192.168.101.3"
 ```
 <p align="center">
-  <img src="./542.PNG">
+  <img src="./5421.PNG">
 </p>
 
 ## Задача 3
