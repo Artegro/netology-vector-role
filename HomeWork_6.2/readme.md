@@ -110,13 +110,29 @@ $  createdb  test_db
 - id (serial primary key)
 - наименование (string)
 - цена (integer)
-
+* Ответ 
+```bash
+CREATE TABLE orders (цена INT, id SERIAL PRIMARY KEY, наименование VARCHAR(50) UNIQUE NOT NULL);
+```
 Таблица clients:
 - id (serial primary key)
 - фамилия (string)
 - страна проживания (string, index)
 - заказ (foreign key orders)
+* Ответ 
+```bash
+test_db=# CREATE TYPE address AS (addr VARCHAR(200), index INT);
+CREATE TYPE
+test_db=# CREATE TABLE clients (id SERIAL PRIMARY KEY, фамилия VARCHAR(50) NOT NULL, заказ SERIAL REFERENCES orders (id),  contry address);
+CREATE TABLE
+test_db=# \dt
+          List of relations
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | clients | table | postgres
+ public | orders  | table | postgres
 
+```
 Приведите:
 - итоговый список БД после выполнения пунктов выше,
 - описание таблиц (describe)
