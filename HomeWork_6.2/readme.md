@@ -1,10 +1,5 @@
 # Домашнее задание к занятию "6.2. SQL"
 
-## Введение
-
-Перед выполнением задания вы можете ознакомиться с 
-[дополнительными материалами](https://github.com/netology-code/virt-homeworks/tree/master/additional/README.md).
-
 ## Задача 1
 
 Используя docker поднимите инстанс PostgreSQL (версию 12) c 2 volume, 
@@ -281,14 +276,37 @@ test_db=# select * from clients;
 Приведите SQL-запрос для выдачи всех пользователей, которые совершили заказ, а также вывод данного запроса.
  
 Подсказк - используйте директиву `UPDATE`.
+* Ответ
+```bash
+update  clients set заказ = 3 where id = 1;
+update  clients set заказ = 4 where id = 2;
+update  clients set заказ = 5 where id = 3;
 
+test_db=# select * from clients where заказ != 0;
+ id |             фамилия             | заказ |   contry
+----+----------------------------------------+------------+------------
+  1 | Иванов Иван Иванович |          3 | (USA,1)
+  2 | Петров Петр Петрович |          4 | (Canada,1)
+  3 | Иоганн Себастьян Бах |          5 | (Japan,83)
+(3 rows)
+
+```
 ## Задача 5
 
 Получите полную информацию по выполнению запроса выдачи всех пользователей из задачи 4 
 (используя директиву EXPLAIN).
 
 Приведите получившийся результат и объясните что значат полученные значения.
-
+* Ответ
+```bash
+test_db=# EXPLAIN select * from clients where заказ != 0;
+                         QUERY PLAN
+------------------------------------------------------------
+ Seq Scan on clients  (cost=0.00..15.38 rows=428 width=158)
+   Filter: ("заказ" <> 0)
+(2 rows)
+```
+Параметр Seq Scan — последовательное чтение данных, cost=0.00..15.38 , говорит о "стоимости" запроса, rows=428 колличество строк овозвращенных запросом, width — средний размер одной строки в байтах,  Filter: ("заказ" <> 0) говорит о примененном фильтре.
 ## Задача 6
 
 Создайте бэкап БД test_db и поместите его в volume, предназначенный для бэкапов (см. Задачу 1).
@@ -300,11 +318,85 @@ test_db=# select * from clients;
 Восстановите БД test_db в новом контейнере.
 
 Приведите список операций, который вы применяли для бэкапа данных и восстановления. 
+* Ответ
+```bash
+# Создаем дамп
+$ pg_dump test_db > ./db
+# Копируем его на волиум
+cp /var/lib/postgresql/db /vol1/db
+ ls /vol1
+db  test1.txt
 
+# Останавливаем контейнер
+$ docker stop 2e22fe70322f
+2e22fe70322f
+
+# запускаем другой контейнер с этим волиумом
+$ docker run  --name pgs1 -v ca11875b5f3eb121c7509975b279c09eb1f345eb77f7b759b183b36745861af4:/vol1  -it -d my:v5 bash
+f99a23ea8a3f1427301beaf2bcb11d08e01afeea6754db20f73de9fd9c7adcbd
+$ docker ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED          STATUS          PORTS      NAMES
+f99a23ea8a3f   my:v5           "docker-entrypoint.s…"   22 seconds ago   Up 21 seconds   5432/tcp   pgs1
+
+# Заходим в контейнер проверяем что волиум смонтировался правильно
+$ docker exec -it pgs1 bash
+root@f99a23ea8a3f:/# ls /vol1
+db  test1.txt
+
+# Создаем базу и загружаем в нее дамп
+postgres@f99a23ea8a3f:~$ createdb  test_db
+postgres@f99a23ea8a3f:~$ psql test_db < /vol1/db
+SET
+SET
+SET
+SET
+SET
+ set_config
+ ...
+ ...
+ERROR:  role "test-simple-user" does not exist
+ERROR:  role "test-admin-user" does not exist
+
+# И проверяем что база и данные приехали
+postgres=# \list
+                                 List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ test_db   | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+(4 rows)
+
+postgres=# \c test_db
+You are now connected to database "test_db" as user "postgres".
+test_db=# select * from all
+test_db-# ;
+ERROR:  syntax error at or near "all"
+LINE 1: select * from all
+                      ^
+test_db=# select * from orders;
+ цена | id | наименование
+----------+----+--------------------------
+       10 |  1 | Шоколад
+     3000 |  2 | Принтер
+      500 |  3 | Книга
+     7000 |  4 | Монитор
+     4000 |  5 | Гитара
+(5 rows)
+
+test_db=# select * from clients;
+ id |             фамилия             | заказ |   contry
+----+----------------------------------------+------------+------------
+  4 | Ронни Джеймс Дио         |            | (Russia,7)
+  5 | Ritchie Blackmore                      |            | (Russia,7)
+  1 | Иванов Иван Иванович |          3 | (USA,1)
+  2 | Петров Петр Петрович |          4 | (Canada,1)
+  3 | Иоганн Себастьян Бах |          5 | (Japan,83)
+(5 rows)
+
+```
 ---
 
-### Как cдавать задание
-
-Выполненное домашнее задание пришлите ссылкой на .md-файл в вашем репозитории.
-
----
