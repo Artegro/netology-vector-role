@@ -112,7 +112,8 @@ $  createdb  test_db
 - цена (integer)
 * Ответ 
 ```bash
-CREATE TABLE orders (цена INT, id SERIAL PRIMARY KEY, наименование VARCHAR(50) UNIQUE NOT NULL);
+test_db=# CREATE TABLE orders (цена INT, id SERIAL PRIMARY KEY, наименование VARCHAR(50) UNIQUE NOT NULL);
+CREATE TABLE
 ```
 Таблица clients:
 - id (serial primary key)
@@ -123,7 +124,7 @@ CREATE TABLE orders (цена INT, id SERIAL PRIMARY KEY, наименовани
 ```bash
 test_db=# CREATE TYPE address AS (addr VARCHAR(200), index INT);
 CREATE TYPE
-test_db=# CREATE TABLE clients (id SERIAL PRIMARY KEY, фамилия VARCHAR(50) NOT NULL, заказ SERIAL REFERENCES orders (id),  contry address);
+test_db=# CREATE TABLE clients (id SERIAL PRIMARY KEY, фамилия VARCHAR(50) NOT NULL, заказ INT REFERENCES orders (id),  contry address);
 CREATE TABLE
 test_db=# \dt
           List of relations
@@ -133,14 +134,79 @@ test_db=# \dt
  public | orders  | table | postgres
 
 ```
+*   Далее раздаем права согласно заданию 
+
+```bash
+test_db=# GRANT ALL ON clients, orders TO "test-admin-user";
+GRANT
+
+test_db=# create user "test-simple-user" with encrypted password '123';
+CREATE ROLE
+
+test_db=# GRANT SELECT, INSERT, UPDATE, DELETE ON clients, orders TO "test-simple-user";
+GRANT
+```
 Приведите:
 - итоговый список БД после выполнения пунктов выше,
-- описание таблиц (describe)
-- SQL-запрос для выдачи списка пользователей с правами над таблицами test_db
-- список пользователей с правами над таблицами test_db
-*   Ответ
+- Ответ  
 ```bash
+
+postgres=# \list
+                                     List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |       Access privileges
+-----------+----------+----------+------------+------------+--------------------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres                   +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres                   +
+           |          |          |            |            | postgres=CTc/postgres
+ test_db   | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =Tc/postgres                  +
+           |          |          |            |            | postgres=CTc/postgres         +
+           |          |          |            |            | "test-admin-user"=CTc/postgres
+(4 rows)
 ```
+
+- описание таблиц (describe)
+- Ответ  
+```bash
+test_db=# \dt
+          List of relations
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | clients | table | postgres
+ public | orders  | table | postgres
+(2 rows)
+```
+
+- SQL-запрос для выдачи списка пользователей с правами над таблицами test_db
+- Ответ  
+```bash
+test_db=# SELECT table_name FROM information_schema.tables
+WHERE table_schema NOT IN ('information_schema','pg_catalog');
+ table_name
+------------
+ clients
+ orders
+```
+
+- список пользователей с правами над таблицами test_db
+- Ответ  
+```bash
+test_db=# \dp
+                                              Access privileges
+ Schema |          Name          |   Type   |        Access privileges         | Column privileges | Policies
+--------+------------------------+----------+----------------------------------+-------------------+----------
+ public | clients                | table    | postgres=arwdDxt/postgres       +|                   |
+        |                        |          | "test-simple-user"=arwd/postgres |                   |
+ public | clients_id_seq         | sequence |                                  |                   |
+ public | clients_заказ_seq | sequence |                                  |                   |
+ public | orders                 | table    | postgres=arwdDxt/postgres       +|                   |
+        |                        |          | "test-simple-user"=arwd/postgres |                   |
+ public | orders_id_seq          | sequence |                                  |                   |
+(5 rows)
+
+```
+
 ## Задача 3
 
 Используя SQL синтаксис - наполните таблицы следующими тестовыми данными:
@@ -170,6 +236,33 @@ test_db=# \dt
 - приведите в ответе:
     - запросы 
     - результаты их выполнения.
+*   Ответ 
+```bash
+INSERT INTO orders (id, наименование, цена) VALUES     (1, 'Шоколад', 10), (2, 'Принтер', 3000), (3, 'Книга', 500), (4, 'Монитор', 7000), (5, 'Гитара', 4000);
+test_db=# SELECT * FROM orders;
+ цена | id | наименование
+----------+----+--------------------------
+       10 |  1 | Шоколад
+     3000 |  2 | Принтер
+      500 |  3 | Книга
+     7000 |  4 | Монитор
+     4000 |  5 | Гитара
+# проверил на одной записи 
+test_db=# INSERT INTO clients (id, фамилия, contry) VALUES (1, 'Иванов Иван Иванович', ('USA', 1));
+INSERT 0 1
+# Удачно , заносим остальные
+test_db=# INSERT INTO clients (id, фамилия, contry) VALUES (1, 'Иванов Иван Иванович', ('USA', 1)), (2, 'Петров Петр Петрович', ('Canada', 1)), (3, 'Иоганн Себастьян Бах', ('Japan', 83)), (4, 'Ронни Джеймс Дио', ('Russia', 7)), (5, 'Ritchie Blackmore', ('Russia', 7));
+INSERT 0 5
+test_db=# select * from clients;
+ id |             фамилия             | заказ |   contry
+----+----------------------------------------+------------+------------
+  1 | Иванов Иван Иванович |            | (USA,1)
+  2 | Петров Петр Петрович |            | (Canada,1)
+  3 | Иоганн Себастьян Бах |            | (Japan,83)
+  4 | Ронни Джеймс Дио         |            | (Russia,7)
+  5 | Ritchie Blackmore                      |            | (Russia,7)
+(5 rows)
+```
 
 ## Задача 4
 
