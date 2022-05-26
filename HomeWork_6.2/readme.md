@@ -9,8 +9,36 @@
 
 Используя docker поднимите инстанс PostgreSQL (версию 12) c 2 volume, 
 в который будут складываться данные БД и бэкапы.
-
 Приведите получившуюся команду или docker-compose манифест.
+
+*   Ответ
+```bash
+# Скопировали образ
+$ docker pull postgres:12  # Скопировали образ
+
+#  сделали свой файл
+$ nano Dockerfile       
+    # base image
+    FROM postgres:12
+    RUN mkdir /vol1
+    VOLUME /vol1
+    RUN mkdir /vol2
+    VOLUME /vol2
+
+#  Смонтировали свой образ по докерфайлу    
+$ docker build -t my:v2 ./         
+
+# Запустили контейнер
+$ docker run -it -d my:v2 bash     # Запустили контейнер
+
+#  Проверяем чо котейнер запустился
+$ docker ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS         PORTS      NAMES
+2e22fe70322f   my:v2           "docker-entrypoint.s…"   9 seconds ago   Up 8 seconds   5432/tcp   gallant_williamson
+
+
+```
+
 
 ## Задача 2
 
@@ -37,7 +65,9 @@
 - описание таблиц (describe)
 - SQL-запрос для выдачи списка пользователей с правами над таблицами test_db
 - список пользователей с правами над таблицами test_db
-
+*   Ответ
+```bash
+```
 ## Задача 3
 
 Используя SQL синтаксис - наполните таблицы следующими тестовыми данными:
