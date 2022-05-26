@@ -37,13 +37,70 @@ CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS  
 2e22fe70322f   my:v2           "docker-entrypoint.s…"   9 seconds ago   Up 8 seconds   5432/tcp   gallant_williamson
 
 
-```
+# Проверям что волумы подключились
+$ docker exec -it 2e22fe70322 bash
+# Заходим в контейнер и создаем файл в /vol2 
+root@2e22fe70322f:/# ls
+bin  boot  dev  docker-entrypoint-initdb.d  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var  vol1  vol2
+root@2e22fe70322f:/# echo  test > /vol2/test.txt
+root@2e22fe70322f:/# exit
 
+# проверяем что файл создался в волуме докера на хосте
+$ sudo ls -l /var/lib/docker/volumes/b0e5a1349f54b78b6240322d9dec52070098b764aad0fdcf4724b3133e244ad9/_data
+total 4
+-rw-r--r-- 1 root root 5 May 26 14:23 test.txt
+# Смотрим конфигурацию ,
+ $ docker inspect -f "" 2e22fe70322f
+ "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "297686860b2428404be3b040e25f23233443c21ec540ee450d7720a026fe66a7",
+                "Source": "/var/lib/docker/volumes/297686860b2428404be3b040e25f23233443c21ec540ee450d7720a026fe66a7/_data",
+                "Destination": "/var/lib/postgresql/data",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "ca11875b5f3eb121c7509975b279c09eb1f345eb77f7b759b183b36745861af4",
+                "Source": "/var/lib/docker/volumes/ca11875b5f3eb121c7509975b279c09eb1f345eb77f7b759b183b36745861af4/_data",
+                "Destination": "/vol1",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "b0e5a1349f54b78b6240322d9dec52070098b764aad0fdcf4724b3133e244ad9",
+                "Source": "/var/lib/docker/volumes/b0e5a1349f54b78b6240322d9dec52070098b764aad0fdcf4724b3133e244ad9/_data",
+                "Destination": "/vol2",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+
+```
+Кажется я перестарался и получилось в 3-мя ...
 
 ## Задача 2
 
 В БД из задачи 1: 
 - создайте пользователя test-admin-user и БД test_db
+*   Ответ 
+```bash
+# su - postgres
+$ createuser --interactive --pwprompt
+Enter name of role to add: test-admin-user
+Enter password for new role:
+Enter it again:
+Shall the new role be a superuser? (y/n) n
+Shall the new role be allowed to create databases? (y/n) n
+Shall the new role be allowed to create more new roles? (y/n) n
+$  createdb  test_db
+```
 - в БД test_db создайте таблицу orders и clients (спeцификация таблиц ниже)
 - предоставьте привилегии на все операции пользователю test-admin-user на таблицы БД test_db
 - создайте пользователя test-simple-user  
