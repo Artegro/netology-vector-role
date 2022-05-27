@@ -288,4 +288,38 @@ innodb_file_per_table  = ON
 root@2ce0ac0b466e:/#
 
 ```
+* проверяем что конфиг работает , для этого перезапустим контейнер
+```bash
+vagrant@server1:~$ docker restart mysql123
+mysql123
+vagrant@server1:~$ docker logs mysql123
+...
+2022-05-27T22:10:16.507409Z 0 [System] [MY-013172] [Server] Received SHUTDOWN from user <via user signal>. Shutting down mysqld (Version: 8.0.29).
+2022-05-27T22:10:17.416168Z 0 [System] [MY-010910] [Server] /usr/sbin/mysqld: Shutdown complete (mysqld 8.0.29)  MySQL Community Server - GPL.
+2022-05-27 22:10:17+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.29-1debian10 started.
+2022-05-27 22:10:18+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+2022-05-27 22:10:18+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.29-1debian10 started.
+2022-05-27T22:10:18.814849Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.29) starting as process 1
+2022-05-27T22:10:18.821775Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+vagrant@server1:~$ docker exec -it mysql123 bash
+root@2ce0ac0b466e:/# mysql -p mysql
+Enter password:
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.29 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> \q
+```
+
 ---
