@@ -1,8 +1,8 @@
 variable "yandex_token" {
-  default = "******************************"
+  default = ""
 }
 variable "yandex_cloud_id" {
-  default = "******************************"
+  default = ""
 }
 variable "yandex_folder_id" {
   default = ""
