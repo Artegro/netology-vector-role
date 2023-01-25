@@ -27,11 +27,17 @@
 #### 3. Воспользуйтесь подготовленным (используется `docker`) или создайте собственное окружение для проведения дальнейших испытаний.
 Подготовим Докер
 ```
-root@deb:/home/artegro# echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" |  tee /etc/apt/sources.list.d/docker.list > /dev/null
-root@deb:/home/artegro# apt update
-
+apt -y install  ca-certificates curl gnupg lsb-release
+mkdir -p /etc/apt/keyrings
+echo  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+apt update
+apt -y  install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
-
+Проверим что все установилось
+```
+docker -v
+Docker version 20.10.23, build 7155243
+```
 #### 4. Проведите запуск playbook на окружении из `prod.yml`. Зафиксируйте полученные значения `some_fact` для каждого из `managed host`.
 
 ```
@@ -74,10 +80,6 @@ root@deb:/home/artegro# apt update
 ```
 
 #### 12. Заполните `README.md` ответами на вопросы. Сделайте `git push` в ветку `master`. В ответе отправьте ссылку на ваш открытый репозиторий с изменённым `playbook` и заполненным `README.md`.
-
-Доступно по ссылке ниже:
-
-
 
 ## Необязательная часть
 
