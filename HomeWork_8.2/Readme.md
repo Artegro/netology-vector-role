@@ -4,7 +4,7 @@
 
 1. (Необязательно) Изучите, что такое [clickhouse](https://www.youtube.com/watch?v=fjTNS2zkeBs) и [vector](https://www.youtube.com/watch?v=CgEhyffisLY)
 2. Создайте свой собственный (или используйте старый) публичный репозиторий на github с произвольным именем.
-
+[Готово](https://github.com/Artegro/netology/tree/main/HomeWork_8.2)
 3. Скачайте [playbook](./playbook/) из репозитория с домашним заданием и перенесите его в свой репозиторий.
 4. Подготовьте хосты в соответствии с группами из предподготовленного playbook.
 
