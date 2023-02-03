@@ -102,5 +102,9 @@ vector-01                  : ok=6    changed=3    unreachable=0    failed=0    s
 
 9. Подготовьте README.md файл по своему playbook. В нём должно быть описано: что делает playbook, какие у него есть параметры и теги.
 
+https://github.com/Artegro/netology/blob/main/HomeWork_8.2/playbook/ReadMe.md
 
 10. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-02-playbook` на фиксирующий коммит, в ответ предоставьте ссылку на него.
+
+https://github.com/Artegro/netology/tree/main/HomeWork_8.2/playbook   фиксирующий комит на этой папке.
+
