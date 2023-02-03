@@ -106,5 +106,5 @@ https://github.com/Artegro/netology/blob/main/HomeWork_8.2/playbook/ReadMe.md
 
 10. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-02-playbook` на фиксирующий коммит, в ответ предоставьте ссылку на него.
 
-https://github.com/Artegro/netology/tree/main/HomeWork_8.2/playbook   фиксирующий комит на этой папке.
+https://github.com/Artegro/netology/tree/7394b4353e3ed957c6d0def691f0ace1ed16554b/HomeWork_8.2/playbook   фиксирующий комит на этой папке.
 
