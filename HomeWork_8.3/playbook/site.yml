@@ -94,4 +94,68 @@
       ansible.builtin.yum:
       notify: Start Vector service
     - name: Flush handlers
-      meta: flush_handlers   
+      meta: flush_handlers
+
+- name: Install Nginx
+  hosts: lighthouse
+  become: true
+  handlers:
+    - name: Start nginx service
+      become: true
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+  tasks:
+  - name: Install epel-release
+    yum:
+      name: epel-release
+      state: present
+  - name: Install Nginx
+    become: true
+    yum:
+      name: nginx
+      state: present
+    notify: Start nginx service
+  - name: Create dir for Lighthouse
+    become: true
+    file:
+      path: "{{ lighthouse_location_dir }}"
+      state: directory
+  - name: Create Nginx config
+    become: true
+    template:
+      src: nginx.conf.j2
+      dest: /etc/nginx/nginx.conf
+      mode: 0644
+    notify: Start nginx service
+
+- name: Install lighthouse
+  hosts: lighthouse
+  handlers:
+    - name: Reload nginx service
+      become: true
+      command: nginx -s reload
+  pre_tasks:
+    - name: Install git
+      become: true
+      yum:
+        name: git
+        state: present
+  tasks:
+    - name: Copy lighthouse from git
+      git:
+        repo: "{{ lighthouse_vcs }}"
+        version: master
+        dest: "{{ lighthouse_location_dir }}"
+      become: true
+    - name: Create lighthouse config
+      become: true
+      template:
+        src: lighthouse.conf.j2
+        dest: /etc/nginx/conf.d/default.conf
+        mode: 0644
+      notify: Reload nginx service
+  post_tasks:
+    - name: Show connect URL lighthouse
+      debug:
+        msg: "http://{{ ansible_host }}/#http://{{ hostvars['clickhouse-01'].ansible_host }}:8123/?user={{ clickhouse_user }}"
