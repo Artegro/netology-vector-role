@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: vector
   author: Artem Grod
   description:  install vector on host
   company: your company (optional)
