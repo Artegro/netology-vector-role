@@ -1,5 +1,0 @@
----
-lighthouse_vcs: https://github.com/VKCOM/lighthouse.git
-lighthouse_location_dir: /home/vagrant/lighthouse
-lighthouse_access_log_name: lighthouse_access
-nginx_user_name: root 
