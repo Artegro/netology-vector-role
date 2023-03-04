@@ -1,10 +1,20 @@
 ---
 - name: VECTOR | Install rpm
   become: true
-  become_method: sudo
+  become_method: sudo 
   ansible.builtin.yum:
-    name: "{{ vector_url }}"
+    name: "{{ vector_url_yum }}"
     state: present
+    disable_gpg_check: true
+  when: 
+    - ansible_facts['distribution'] == 'CentOS'
+- name: VECTOR | Install deb
+  ansible.builtin.apt:
+    deb: "{{ vector_url_deb }}"
+    state: present
+  become: true
+  when: 
+    - ansible_facts['distribution'] == 'Ubuntu'
 - name: VECTOR | Template config
   become: true
   ansible.builtin.template:
@@ -22,8 +32,15 @@
     mode: "0644"
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_gid }}" 
-- name: VECTOR | Start service
+- name: VECTOR | Start service CentOS
   ansible.builtin.yum:
   notify: Start Vector service
+  when: 
+    - ansible_facts['distribution'] == 'CentOS'
+- name: VECTOR | Start service Ubuntu
+  ansible.builtin.apt:
+  notify: Start Vector service
+  when: 
+    - ansible_facts['distribution'] == 'Ubuntu'
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers

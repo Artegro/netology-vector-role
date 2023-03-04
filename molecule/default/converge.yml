@@ -1,0 +1,25 @@
+---
+- name: Converge
+  hosts: all
+  pre_tasks:
+    - name: Repository
+      ansible.builtin.shell: |
+        set -o pipefail;
+        cd /etc/yum.repos.d/
+        sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+        sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+        yum update -y
+      ignore_errors: yes
+      register: ignore_errors_register
+      become: true
+      changed_when: false
+      args:
+        executable: /bin/bash
+      when: 
+        - ansible_facts['distribution'] == 'CentOS'
+        - ansible_distribution_major_version == "8"
+
+  tasks:
+    - name: "Include vector"
+      ansible.builtin.include_role:
+        name: "vector"

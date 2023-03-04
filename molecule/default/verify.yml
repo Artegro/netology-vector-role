@@ -1,0 +1,50 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: VECTOR | Install rpm Check
+      ansible.builtin.package:
+        name: "vector"
+        state: present
+      check_mode: yes
+      register: pkg_status
+    - name: VECTOR | test VECTOR package is installed
+      ansible.builtin.assert:
+        that:
+          - not pkg_status.changed
+    - name: VECTOR | Config file
+      ansible.builtin.stat:
+        path: "/etc/vector/vector.yml"
+      register: remote_file
+    - name: VECTOR | Config file is created correctly
+      ansible.builtin.assert:
+        that:
+          - "remote_file.stat.exists"
+          - "remote_file.stat.isreg" # is a regular file
+          - "remote_file.stat.path == '/etc/vector/vector.yml'"
+    - name: VECTOR | Config file verify configuration
+      become: true
+      ansible.builtin.lineinfile:
+        dest: /etc/vector/vector.yml
+        line: "{{ item }}"
+        state: present
+      check_mode: true
+      register: ssh_config
+      failed_when: ssh_config is changed
+      with_items:
+        - "        endpoint: http://172.16.0.20:8123"
+        - "        type: clickhouse"
+        - "        table: access_logs"
+        - "        database: logs"
+        - "        type: file"
+    - name: VECTOR | Start 
+      become: true
+      ansible.builtin.shell: |
+          vector -h
+      register: vector_run
+      failed_when: vector_run.rc !=0
+      changed_when: vector_run.rc !=0
+# vector  --config-yaml /etc/vector/vector.yml -h
